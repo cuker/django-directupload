@@ -10,10 +10,10 @@ Requirements
 Installation
 ============
 
-# Ensure directupload is in your python path
-# Add the following line to your url patterns: ``(r'^uploadify/', include('directupload.urls'))``
-# Add ``directupload`` to your INSTALLED_APPS
-# Insert the following into the head of your admin/change_form.html template: {% load uploadify_tags %}{% uploadify_head %}
+1) Ensure directupload is in your python path
+2) Add the following line to your url patterns: ``(r'^uploadify/', include('directupload.urls'))``
+3) Add ``directupload`` to your INSTALLED_APPS
+4) Insert the following into the head of your admin/change_form.html template: {% load uploadify_tags %}{% uploadify_head %}
 
 
 Features
