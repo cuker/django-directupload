@@ -1,0 +1,9 @@
+<script type="text/javascript">
+var jQuery = django.jQuery; //uploadify will not work otherwise
+</script>
+{{media}}
+<script type="text/javascript">
+(function($) {
+    make_file_fields_dynamic($, "{% url uploadify-options %}")
+})(jQuery);
+</script>
