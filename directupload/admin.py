@@ -15,3 +15,9 @@ class UploadifyAdminMixin(object):
         """
         kwargs['widget'] = UploadifyClearableFileInput(db_field=db_field)
         return db_field.formfield(**kwargs)
+
+def patch_admin():
+    from django.contrib.admin.options import FORMFIELD_FOR_DBFIELD_DEFAULTS
+    FORMFIELD_FOR_DBFIELD_DEFAULTS[models.ImageField] = {'widget': UploadifyClearableFileInput}
+    FORMFIELD_FOR_DBFIELD_DEFAULTS[models.FileField] = {'widget': UploadifyClearableFileInput}
+

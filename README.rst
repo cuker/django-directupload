@@ -14,6 +14,7 @@ Installation
 2) Add the following line to your url patterns: ``(r'^uploadify/', include('directupload.urls'))``
 3) Add ``directupload`` to your INSTALLED_APPS
 4) Insert the following into the head of your admin/change_form.html template: {% load uploadify_tags %}{% uploadify_head %}
+5) Call directupload.admin.patch_admin to monkey patht the admin, this should be done before the admin.autodiscover is called
 
 
 Features

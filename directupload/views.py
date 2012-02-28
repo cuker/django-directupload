@@ -24,7 +24,7 @@ def upload_file(request):
     #this is handled by a different session then the user's browser, hence csrf exempt
     if not request.POST:
         return HttpResponseBadRequest()
-    from directupload.djangoview import unsign
+    from directupload.backends.djangoview import unsign
     data = dict(parse_qsl(unsign(request.POST['payload'])))
     assert data['request_time'] #TODO respect some expiration
     path = request.POST.get('targetpath', os.path.join(data['upload_to'], request.POST['Filename']))
