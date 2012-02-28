@@ -60,8 +60,9 @@ function make_file_fields_dynamic($, options_url) {
                 
                 function on_upload_success(file, data, response) {
                     delete form.data('pending_uploads')[this.id];
-                    if (file.targetpath) {
-                        $('#'+this.id).data('path', file.targetpath);
+                    var path = $('#'+file.id).data('path');
+                    if (path) {
+                        $('#'+this.id).data('path', path);
                     } else {
                         $('#'+this.id).data('path', data);
                     }
@@ -91,7 +92,7 @@ function make_file_fields_dynamic($, options_url) {
                                 for (key in data) {
                                     swfuploadify.addFileParam(file.id, key, data[key]);
                                 }
-                                file.targetpath = data['targetpath'];
+                                $('#'+file.id).data('path', data['targetpath'])
                             }
                         });
                     } else {
