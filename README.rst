@@ -21,7 +21,7 @@ Features
 
 * Utilizes Uploadify 3.0 (beta)
 * Direct uploading backends, currently supports an internal django view or S3
-* Prevents users from uploading over existing files using the desired name fetched from the storage backend
+* Admin integration via monkey patch or mixin
 * Provides a widget class for integration with your django forms
-* Is able to monkey patch the django admin for uploadify functionality (also offers an admin mixin alternative)
+* Prevents users from uploading over existing files using the desired name fetched from the storage backend
 
