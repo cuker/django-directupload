@@ -43,7 +43,7 @@ register.tag(RenderUploadifyField)
 def is_file_field(field, model):
     #field|is_file_field:line.model_admin.model
     model_field = model._meta.get_field(field.name)
-    return isinstance(model_field, models.FileField)
+    return isinstance(model_field, models.FileField) or hasattr(model_field, 'upload_to')
 
 register.filter('is_file_field', is_file_field)
 

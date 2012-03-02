@@ -5,7 +5,7 @@ try:
 except ImportError:
     from distutils.core import setup, find_packages
 
-version = '0.0.4'
+version = '0.0.5'
 
 setup(name='django-directupload',
       version=version,
