@@ -5,7 +5,7 @@ var jQuery = django.jQuery; //uploadify will not work otherwise
 <script type="text/javascript">
 (function($) {
     $(document).ready(function() {
-        make_file_fields_dynamic($, "{% url uploadify-options %}")
+        make_file_fields_dynamic($, "{% url uploadify-options %}", "{% url uploadify-determine-name %}")
     });
 })(jQuery);
 </script>

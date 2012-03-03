@@ -11,11 +11,7 @@ import os
 import datetime
 
 def uploadify_options_view(request):
-    if not request.POST:
-        return HttpResponseBadRequest()
     uploadify_options = {}
-    if 'upload_to' in request.POST:
-        uploadify_options['folder'] = request.POST['upload_to']
     backend = get_uploadify_backend()
     data = backend(request=request, 
                    uploadify_options=uploadify_options).get_options_json()

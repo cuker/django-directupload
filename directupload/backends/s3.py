@@ -88,6 +88,8 @@ class S3UploadifyBackend(BaseUploadifyBackend):
     
     def update_post_params(self, params):
         #instruct s3 that our key is the targetpath
+        self.build_post_data()
+        params.update(self.post_data)
         params['key'] = params['targetpath']
 
 def _uri_encode(str):

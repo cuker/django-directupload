@@ -23,7 +23,6 @@ class BaseUploadifyBackend(object):
         _set_default_if_none(self.options, 'determineName', self.get_determine_name())
         
         self.post_data = post_data
-        self.build_post_data()
     
     def get_check_existing(self):
         return False
@@ -37,11 +36,8 @@ class BaseUploadifyBackend(object):
     def build_post_data(self):
         pass
     
-    def update_post_params(self, params):
-        pass
-    
     def get_options_json(self):
-        self.options['postData'] = self.post_data
+        #self.options['postData'] = self.post_data
         subs = []
         for key in self.options:
             if key in UPLOADIFY_METHODS:
@@ -54,6 +50,10 @@ class BaseUploadifyBackend(object):
             out = out.replace(search, replace)
             
         return out
+    
+    def update_post_params(self, params):
+        self.build_post_data()
+        params.update(self.post_data)
 
 def _set_default_if_none(dict, key, default=None):
     if key not in dict:
