@@ -1,4 +1,4 @@
-{% load uploadify_tags %}
+{% load directupload_tags %}
 <fieldset class="module aligned {{ fieldset.classes }}">
     {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
     {% if fieldset.description %}
@@ -19,7 +19,7 @@
                         {% else %}
                             {# begin custom uploadify snippet #}
                             {% if field.field|is_file_field:line.model_admin.model %}
-                            {% render_uploadify_field field.field model=line.model_admin.model %}
+                            {% render_upload_field field.field model=line.model_admin.model %}
                             {% else %}
                             {{ field.field }}
                             {% endif %}

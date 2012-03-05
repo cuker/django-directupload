@@ -1,4 +1,4 @@
-from base import BaseUploadifyBackend
+from base import BaseUploadBackend
 
 import datetime
 from urllib import urlencode
@@ -15,10 +15,13 @@ def sign(value):
 def unsign(value):
     return signer.unsign(value)
 
-class DjangoViewBackend(BaseUploadifyBackend):
+class DjangoViewBackend(BaseUploadBackend):
     """Uploadify for using the builtin django view"""
     
-    def get_uploader(self):
+    def build_options(self):
+        self.options['fileObjName'] = 'file'
+    
+    def get_target_url(self):
         return reverse('uploadify-upload-file')
     
     def build_post_data(self):

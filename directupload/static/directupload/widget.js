@@ -18,12 +18,11 @@ function add_csrf(jqXHR, settings) {
 }
 
 function make_file_fields_dynamic($, options_url, determine_name_url) {
-    function get_form(file) {
-        return $('#'+file.id).parents('form:first')
+    function get_form(item) {
+        return $(item).parents('form:first')
     }
     
     function init_form(form) {
-        form = form || get_form(this);
         if (form.data('uploadify_init')) {
             return
         }
@@ -31,7 +30,7 @@ function make_file_fields_dynamic($, options_url, determine_name_url) {
         form.data('submit', false);
         form.submit(function() {
             if ($.isEmptyObject(form.data('pending_uploads'))) {
-                form.find('.uploadify').replaceWith(function() {
+                form.find('.uploadifyinput').replaceWith(function() {
                     var path = $(this).data('path')
                     if (path) {
                         var fname = $(this).attr('id').substr(3) //uploadify is nice enough to nuke this variable /s
@@ -47,17 +46,20 @@ function make_file_fields_dynamic($, options_url, determine_name_url) {
     }
     
     
-    function on_select(file) {
-        
+    function add(event, data) {
+        //console.log(event, data)
+        var file = data.files[0];
+        var id = $(this).attr('id');
+        var options = event.data.fileupload.options;
         form = get_form(this)
         if (!form.data('uploadify_init')) { //hack around
             init_form(form)
         }
-        form.data('pending_uploads')[this.id] = true;
+        console.log(form)
+        //form.data('pending_uploads')[id] = true;
         
         //determine the target path and update post data if our backend requires
-        var swfuploadify = window['uploadify_' + this.id];
-        var upload_to = $(document).data('uploadify-directories')[this.id];
+        var upload_to = $(event.currentTarget).attr('data-upload-to')
         if (upload_to.substr(-1) != '/') {
             upload_to += '/';
         }
@@ -70,37 +72,35 @@ function make_file_fields_dynamic($, options_url, determine_name_url) {
             beforeSend : add_csrf,
             data    : {filename: file.name,
                        upload_to: upload_to},
-            success : function(data) {
-                for (key in data) {
-                    swfuploadify.addFileParam(file.id, key, data[key]);
-                }
-                $('#'+file.id).data('path', data['targetpath'])
+            success : function(post_data) {
+                data.formData = post_data;
+                data.fileInput.attr('name', options.fileObjName);
+                file.path = post_data['targetpath'];
+                data.submit();
             }
         });
     }
     
-    function on_upload_success(file, data, response) {
+    function done(event, data) {
+        var id = $(this).attr('id')
+        var file = data.files[0];
+        
         form = get_form(this)
-        delete form.data('pending_uploads')[this.id];
-        var path = $('#'+file.id).data('path');
-        if (path) {
-            $('#'+this.id).data('path', path);
-        } else {
-            $('#'+this.id).data('path', data);
-        }
+        delete form.data('pending_uploads')[id];
+        $('#'+id).data('path', file.path);
+        $('#'+id).after('<span>File uploaded: '+file.name+'</span>')
         if ($.isEmptyObject(form.data('pending_uploads')) && form.data('submit')) {
             form.submit();
         }
+        console.log('done')
     }
     
-    function on_upload_error(file,errorCode,errorMsg,errorString, queue) {
-        form = get_form(this)
-        delete form.data('pending_uploads')[this.id];
-    }
-    
-    function on_upload_cancel() {
-        form = get_form(this)
-        delete form.data('pending_uploads')[this.id];
+    function fail(e, data) {
+        var id = $(this).attr('id')
+        var file = data.files[0];
+        delete form.data('pending_uploads')[id];
+        console.log('fail');
+        console.log([e, data]);
     }
     
     $(document).data('uploadify-directories', {})
@@ -110,16 +110,20 @@ function make_file_fields_dynamic($, options_url, determine_name_url) {
     
     $.getJSON(options_url, function(data) {
         var options = $.extend({
-            'onUploadSuccess': on_upload_success,
-            'onSelect': on_select,
-            'onUploadError': on_upload_error,
-            'onUploadCancel': on_upload_cancel,
-            'auto': true,
+            //'onUploadSuccess': on_upload_success,
+            'add': add,
+            'fail': fail,
+            'done': done,
+            //'onUploadError': on_upload_error,
+            //'onUploadCancel': on_upload_cancel,
+            'autoUpload': true,
             'multi': false,
-            'removeCompleted': false,
-            'uploadLimit': 1
+            //'removeCompleted': false,
+            //'uploadLimit': 1,
+            'async': true,
+            'type': 'POST'
         }, data);
-        $('.uploadifyinput').uploadify(options);
+        $('.uploadifyinput').fileupload(options);
     });
 }
 

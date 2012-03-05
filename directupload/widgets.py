@@ -7,11 +7,16 @@ class UploadifyInputMixin(object):
     db_field = None
     
     class Media: #this does not work for the admin as django ignores it [WTF]
-        css = {'all': ('uploadify/uploadify.css',)}
-        if settings.DEBUG:
-            js = ('uploadify/jquery.uploadify.js', 'uploadify/widget.js')
-        else:
-            js = ('uploadify/jquery.uploadify.min.js', 'uploadify/widget.js')
+        #css = {'all': ('uploadify/uploadify.css',)}
+        #if settings.DEBUG:
+        #    js = ('uploadify/jquery.uploadify.js', 'uploadify/widget.js')
+        #else:
+        #    js = ('uploadify/jquery.uploadify.min.js', 'uploadify/widget.js')
+        js = ('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js',
+              settings.STATIC_URL+'directupload/js/vendor/jquery.ui.widget.js',
+              settings.STATIC_URL+'directupload/js/jquery.fileupload.js',
+              settings.STATIC_URL+'directupload/js/jquery.iframe-transport.js',
+              settings.STATIC_URL+'directupload/widget.js',)
     
     def get_file_field(self):
         if self.db_field:

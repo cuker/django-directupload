@@ -8,7 +8,7 @@ import hmac
 import hashlib
 import os
 
-from base import BaseUploadifyBackend, _set_default_if_none, json
+from base import BaseUploadBackend, _set_default_if_none, json
 
 # AWS Options
 ACCESS_KEY_ID       = getattr(settings, 'AWS_ACCESS_KEY_ID', None)
@@ -21,19 +21,21 @@ DEFAULT_KEY_PATTERN = getattr(settings, 'AWS_DEFAULT_KEY_PATTERN', '${targetname
 DEFAULT_FORM_TIME   = getattr(settings, 'AWS_DEFAULT_FORM_LIFETIME', 36000) # 10 HOURS
 
 
-class S3UploadifyBackend(BaseUploadifyBackend):
+class S3UploadifyBackend(BaseUploadBackend):
     """Uploadify for Amazon S3"""
     
-    def __init__(self, request, uploadify_options={}, post_data={}, conditions={}):
+    def __init__(self, request, options={}, post_data={}, conditions={}):
         self.conditions = conditions
-        super(S3UploadifyBackend, self).__init__(request, uploadify_options, post_data)
+        super(S3UploadifyBackend, self).__init__(request, options, post_data)
     
-    def get_uploader(self):
+    def get_target_url(self):
         return BUCKET_URL
     
+    def build_options(self):
+        self.options['forceIframeTransport'] = True
+        self.options['fileObjName'] = 'file'
+    
     def build_post_data(self):
-        self.options['fileObjName'] = 'file' #S3 requires this be the field name
-        
         if 'folder' in self.options:
             key = os.path.join(self.options['folder'], DEFAULT_KEY_PATTERN)
         else:
@@ -69,11 +71,9 @@ class S3UploadifyBackend(BaseUploadifyBackend):
         conditions = list()
         
         #make s3 happy with uploadify
-        #conditions.append(['starts-with', '$folder', '']) #no longer passed by uploadify
-        conditions.append(['starts-with', '$filename', ''])
         conditions.append(['starts-with', '$targetname', '']) #variable introduced by this package
         conditions.append(['starts-with', '$targetpath', self.options['folder']])
-        #conditions.append({'success_action_status': '200'})
+        conditions.append({'success_action_status': '200'})
         
         #real conditions
         conditions.append(['starts-with', '$key', self.options['folder']])
@@ -91,6 +91,7 @@ class S3UploadifyBackend(BaseUploadifyBackend):
         self.build_post_data()
         params.update(self.post_data)
         params['key'] = params['targetpath']
+        params['success_action_status'] = '200'
 
 def _uri_encode(str):
     try:

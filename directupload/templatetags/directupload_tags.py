@@ -11,15 +11,15 @@ from classytags.arguments import Argument, KeywordArgument
 
 from directupload.widgets import UploadifyClearableFileInput
 
-@register.inclusion_tag('uploadify/templatetags/head.html')
-def uploadify_head():
+@register.inclusion_tag('directupload/templatetags/head.html')
+def directupload_head():
     return {
         'media': UploadifyClearableFileInput().media,
     }
 
-class RenderUploadifyField(InclusionTag):
-    name = 'render_uploadify_field'
-    template = 'uploadify/templatetags/render_uploadify_widget.html'
+class RenderDirectUploadField(InclusionTag):
+    name = 'render_upload_field'
+    template = 'directupload/templatetags/render_file_widget.html'
     options = Options(
         Argument('field', resolve=True),
         KeywordArgument('model', resolve=True, required=False),
@@ -38,7 +38,7 @@ class RenderUploadifyField(InclusionTag):
         field.field.widget = widget
         return {'widget': widget, 'field':field}
 
-register.tag(RenderUploadifyField)
+register.tag(RenderDirectUploadField)
 
 def is_file_field(field, model):
     #field|is_file_field:line.model_admin.model
