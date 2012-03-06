@@ -21,12 +21,10 @@ DEFAULT_KEY_PATTERN = getattr(settings, 'AWS_DEFAULT_KEY_PATTERN', '${targetname
 DEFAULT_FORM_TIME   = getattr(settings, 'AWS_DEFAULT_FORM_LIFETIME', 36000) # 10 HOURS
 
 
-class S3UploadifyBackend(BaseUploadBackend):
-    """Uploadify for Amazon S3"""
-    
+class S3Backend(BaseUploadBackend):
     def __init__(self, request, options={}, post_data={}, conditions={}):
         self.conditions = conditions
-        super(S3UploadifyBackend, self).__init__(request, options, post_data)
+        super(S3Backend, self).__init__(request, options, post_data)
     
     def get_target_url(self):
         return BUCKET_URL

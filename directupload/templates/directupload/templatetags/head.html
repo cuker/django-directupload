@@ -7,7 +7,7 @@ var jQuery = django.jQuery; //uploadify will not work otherwise
 <script type="text/javascript">
 (function($) {
     $(document).ready(function() {
-        make_file_fields_dynamic($, $('.directupload'), "{% url directupload-options %}", "{% url directupload-determine-name %}")
+        make_file_fields_dynamic($, '.directupload', "{% url directupload-options %}", "{% url directupload-determine-name %}")
     });
 })(jQuery);
 </script>

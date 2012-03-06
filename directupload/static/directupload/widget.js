@@ -30,11 +30,13 @@ function make_file_fields_dynamic($, selector, options_url, determine_name_url) 
         form.data('submit', false);
         form.submit(function() {
             if ($.isEmptyObject(form.data('pending_uploads'))) {
-                form.find('.uploadifyinput').replaceWith(function() {
+                form.find(':input').filter(selector).replaceWith(function() {
                     var path = $(this).data('path')
                     if (path) {
                         var fname = $(this).attr('id').substr(3) //uploadify is nice enough to nuke this variable /s
                         return '<input type="hidden" name="'+fname+'" id="'+$(this).attr('id')+'" value="'+path+'"/>';
+                    } else {
+                        return $(this);
                     }
                 });
                 return true;
@@ -106,7 +108,7 @@ function make_file_fields_dynamic($, selector, options_url, determine_name_url) 
     }
     
     $(document).data('uploadify-directories', {})
-    selector.each(function() { //may not be necessary
+    $(selector).each(function() { //may not be necessary
         $(document).data('uploadify-directories')[$(this).attr('id')] = $(this).attr('data-upload-to');
     });
     
@@ -125,7 +127,7 @@ function make_file_fields_dynamic($, selector, options_url, determine_name_url) 
             'async': true,
             'type': 'POST'
         }, data);
-        selector.fileupload(options);
+        $(selector).fileupload(options);
     });
 }
 
