@@ -57,6 +57,7 @@ function make_file_fields_dynamic($, selector, options_url, determine_name_url) 
         if (!form.data('uploadify_init')) { //hack around
             init_form(form)
         }
+        if (!file) return; //some browsers improperly trigger the event for non file fields
         form.data('pending_uploads')[id] = true;
         
         //determine the target path and update post data if our backend requires
