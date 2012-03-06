@@ -22,7 +22,7 @@ class DjangoViewBackend(BaseUploadBackend):
         self.options['fileObjName'] = 'file'
     
     def get_target_url(self):
-        return reverse('uploadify-upload-file')
+        return reverse('directupload-file')
     
     def build_post_data(self):
         data = {'upload_to': self.options['folder'],

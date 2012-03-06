@@ -9,12 +9,12 @@ from classytags.core import Options
 from classytags.helpers import InclusionTag
 from classytags.arguments import Argument, KeywordArgument
 
-from directupload.widgets import UploadifyClearableFileInput
+from directupload.widgets import DirectUploadClearableFileInput
 
 @register.inclusion_tag('directupload/templatetags/head.html')
 def directupload_head():
     return {
-        'media': UploadifyClearableFileInput().media,
+        'media': DirectUploadClearableFileInput().media,
     }
 
 class RenderDirectUploadField(InclusionTag):
@@ -33,7 +33,7 @@ class RenderDirectUploadField(InclusionTag):
             model_field = model._meta.get_field(field.name)
         if not model_field:
             pass
-        widget = UploadifyClearableFileInput(db_field=model_field)
+        widget = DirectUploadClearableFileInput(db_field=model_field)
         field.field = copy.copy(field.field) #looks weird but field is actually a bound field
         field.field.widget = widget
         return {'widget': widget, 'field':field}

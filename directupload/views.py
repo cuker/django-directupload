@@ -4,14 +4,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.utils import simplejson as json
 from django.utils.encoding import force_unicode, smart_str
 
-from directupload.backends import get_uploadify_backend
+from directupload.backends import get_directupload_backend
 
 from urlparse import parse_qsl
 import os
 import datetime
 
-def uploadify_options_view(request):
-    backend = get_uploadify_backend()
+def upload_options_view(request):
+    backend = get_directupload_backend()
     data = backend(request=request).get_options_json()
     return HttpResponse(data)
 
@@ -41,7 +41,7 @@ def determine_name(request):
     
     data = {'targetpath':path,
             'targetname':os.path.split(path)[-1],}
-    backend = get_uploadify_backend()
+    backend = get_directupload_backend()
     backend(request=request, options={'folder':request.POST['upload_to']}).update_post_params(data)
     return HttpResponse(json.dumps(data))
 

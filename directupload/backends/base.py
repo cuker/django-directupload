@@ -10,17 +10,13 @@ class BaseUploadBackend(object):
         self.options.update(options)
         
         _set_default_if_none(self.options, 'url', self.get_target_url())
-        _set_default_if_none(self.options, 'checkExisting', self.get_check_existing())
         _set_default_if_none(self.options, 'determineName', self.get_determine_name())
         
         self.build_options()
         self.post_data = post_data
     
-    def get_check_existing(self):
-        return False
-    
     def get_determine_name(self):
-        return reverse('uploadify-determine-name')
+        return reverse('directupload-determine-name')
     
     def get_target_url(self):
         pass

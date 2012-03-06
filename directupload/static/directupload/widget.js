@@ -17,7 +17,7 @@ function add_csrf(jqXHR, settings) {
     jqXHR.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
 }
 
-function make_file_fields_dynamic($, options_url, determine_name_url) {
+function make_file_fields_dynamic($, selector, options_url, determine_name_url) {
     function get_form(item) {
         return $(item).parents('form:first')
     }
@@ -106,7 +106,7 @@ function make_file_fields_dynamic($, options_url, determine_name_url) {
     }
     
     $(document).data('uploadify-directories', {})
-    $('.uploadifyinput').each(function() {
+    selector.each(function() { //may not be necessary
         $(document).data('uploadify-directories')[$(this).attr('id')] = $(this).attr('data-upload-to');
     });
     
@@ -125,7 +125,7 @@ function make_file_fields_dynamic($, options_url, determine_name_url) {
             'async': true,
             'type': 'POST'
         }, data);
-        $('.uploadifyinput').fileupload(options);
+        selector.fileupload(options);
     });
 }
 
