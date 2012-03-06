@@ -55,8 +55,7 @@ function make_file_fields_dynamic($, options_url, determine_name_url) {
         if (!form.data('uploadify_init')) { //hack around
             init_form(form)
         }
-        console.log(form)
-        //form.data('pending_uploads')[id] = true;
+        form.data('pending_uploads')[id] = true;
         
         //determine the target path and update post data if our backend requires
         var upload_to = $(event.currentTarget).attr('data-upload-to')
@@ -64,9 +63,12 @@ function make_file_fields_dynamic($, options_url, determine_name_url) {
             upload_to += '/';
         }
         
+        $('#'+id).siblings('.uploadstatus').remove()
+        $('#'+id).after('<span class="uploadstatus">Uploading: '+file.name+'</span>')
+        
         jQuery.ajax({
             type    : 'POST',
-            async   : false,
+            //async   : false,
             dataType: 'json',
             url     : determine_name_url,
             beforeSend : add_csrf,
@@ -88,11 +90,11 @@ function make_file_fields_dynamic($, options_url, determine_name_url) {
         form = get_form(this)
         delete form.data('pending_uploads')[id];
         $('#'+id).data('path', file.path);
-        $('#'+id).after('<span>File uploaded: '+file.name+'</span>')
+        $('#'+id).siblings('.uploadstatus').remove()
+        $('#'+id).after('<span class="uploadstatus">File uploaded: '+file.name+'</span>')
         if ($.isEmptyObject(form.data('pending_uploads')) && form.data('submit')) {
             form.submit();
         }
-        console.log('done')
     }
     
     function fail(e, data) {
