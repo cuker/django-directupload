@@ -38,10 +38,11 @@ def determine_name(request):
     if desired_path.startswith('/'):
         desired_path = desired_path[1:]
     path = default_storage.get_available_name(desired_path)
+    folder = os.path.split(desired_path)[0]
     
     data = {'targetpath':path,
             'targetname':os.path.split(path)[-1],}
     backend = get_directupload_backend()
-    backend(request=request, options={'folder':request.POST['upload_to']}).update_post_params(data)
+    backend(request=request, options={'folder':folder}).update_post_params(data)
     return HttpResponse(json.dumps(data))
 

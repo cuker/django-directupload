@@ -60,7 +60,7 @@ function make_file_fields_dynamic($, selector, options_url, determine_name_url) 
         form.data('pending_uploads')[id] = true;
         
         //determine the target path and update post data if our backend requires
-        var upload_to = $(event.currentTarget).attr('data-upload-to')
+        var upload_to = $(event.currentTarget).attr('data-upload-to') || '';
         if (upload_to.substr(-1) != '/') {
             upload_to += '/';
         }

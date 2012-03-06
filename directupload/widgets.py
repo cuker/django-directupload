@@ -1,6 +1,6 @@
 from django.forms.widgets import FileInput, ClearableFileInput
 from django.core.files.storage import default_storage
-from django.db.models.fields.files import FileField
+from django.db.models.fields.files import FileField, FieldFile
 from django.conf import settings
 
 class DirectUploadInputMixin(object):
@@ -20,11 +20,11 @@ class DirectUploadInputMixin(object):
     
     def value_from_datadict(self, data, files, name):
         "File widgets take data from FILES, not POST"
-        if name in data:
+        if data.get(name, None):
             file_path = data[name]
             file_field = self.get_file_field()
             file_obj = file_field.storage.open(file_path)
-            file_copy = file_field.attr_class(None, file_field, file_path)
+            file_copy = FieldFile(None, file_field, file_path)#file_field.attr_class(None, file_field, file_path)
             file_copy.file = file_obj
             file_copy._committed = True
             return file_copy
