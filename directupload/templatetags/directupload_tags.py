@@ -1,5 +1,6 @@
 from django import template
 from django.db import models
+from django.db.models.fields import FieldDoesNotExist
 
 import copy
 
@@ -42,7 +43,10 @@ register.tag(RenderDirectUploadField)
 
 def is_file_field(field, model):
     #field|is_file_field:line.model_admin.model
-    model_field = model._meta.get_field(field.name)
+    try:
+        model_field = model._meta.get_field(field.name)
+    except FieldDoesNotExist:
+        return False
     return isinstance(model_field, models.FileField) or hasattr(model_field, 'upload_to')
 
 register.filter('is_file_field', is_file_field)
