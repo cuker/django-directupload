@@ -67,7 +67,8 @@ function make_file_fields_dynamic($, selector, options_url, determine_name_url) 
         }
         
         $('#'+id).siblings('.uploadstatus').remove()
-        $('#'+id).after('<span class="uploadstatus">Uploading: '+file.name+'</span>')
+        $('#'+id).after('<span class="uploadstatus">Uploading: '+file.name+'<span class="uploadprogress">&nbsp;</span></span>')
+        $('#'+id).hide()
         
         jQuery.ajax({
             type    : 'POST',
@@ -86,6 +87,12 @@ function make_file_fields_dynamic($, selector, options_url, determine_name_url) 
         });
     }
     
+    function progress(event, data) {
+        var id = $(this).attr('id')
+        var progress = parseInt(data.loaded / data.total * 100, 10);
+        $('#'+id).siblings('.uploadstatus').find('.uploadprogress').text(progress+'%')
+    }
+    
     function done(event, data) {
         var id = $(this).attr('id')
         var file = data.files[0];
@@ -94,10 +101,18 @@ function make_file_fields_dynamic($, selector, options_url, determine_name_url) 
         delete form.data('pending_uploads')[id];
         $('#'+id).data('path', file.path);
         $('#'+id).siblings('.uploadstatus').remove()
-        $('#'+id).after('<span class="uploadstatus">File uploaded: '+file.name+'</span>')
+        $('#'+id).after('<span class="uploadstatus">File uploaded: '+file.name+' <a href="#" data-upload-id="'+id+'">Remove</a></span>')
+        $('#'+id).siblings('.uploadstatus').find('a').click(remove_click)
         if ($.isEmptyObject(form.data('pending_uploads')) && form.data('submit')) {
             form.submit();
         }
+    }
+    
+    function remove_click() {
+        var id = $(this).attr('data-upload-id')
+        $('#'+id).data('path', null);
+        $('#'+id).siblings('.uploadstatus').remove()
+        $('#'+id).show()
     }
     
     function fail(e, data) {
@@ -117,6 +132,7 @@ function make_file_fields_dynamic($, selector, options_url, determine_name_url) 
         var options = $.extend({
             //'onUploadSuccess': on_upload_success,
             'add': add,
+            'progress': progress,
             'fail': fail,
             'done': done,
             //'onUploadError': on_upload_error,
