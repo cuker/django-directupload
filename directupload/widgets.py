@@ -7,8 +7,7 @@ class DirectUploadInputMixin(object):
     db_field = None
     
     class Media: #this does not work for the admin as django ignores it [WTF]
-        js = ('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js',
-              settings.STATIC_URL+'directupload/js/vendor/jquery.ui.widget.js',
+        js = (settings.STATIC_URL+'directupload/js/vendor/jquery.ui.widget.js',
               settings.STATIC_URL+'directupload/js/jquery.fileupload.js',
               settings.STATIC_URL+'directupload/js/jquery.iframe-transport.js',
               settings.STATIC_URL+'directupload/widget.js',)
