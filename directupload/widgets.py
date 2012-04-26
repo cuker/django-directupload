@@ -1,16 +1,9 @@
 from django.forms.widgets import FileInput, ClearableFileInput
 from django.core.files.storage import default_storage
 from django.db.models.fields.files import FileField, FieldFile
-from django.conf import settings
 
 class DirectUploadInputMixin(object):
     db_field = None
-    
-    class Media: #this does not work for the admin as django ignores it [WTF]
-        js = (settings.STATIC_URL+'directupload/js/vendor/jquery.ui.widget.js',
-              settings.STATIC_URL+'directupload/js/jquery.fileupload.js',
-              settings.STATIC_URL+'directupload/js/jquery.iframe-transport.js',
-              settings.STATIC_URL+'directupload/widget.js',)
     
     def get_file_field(self):
         if self.db_field:

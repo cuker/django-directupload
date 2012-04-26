@@ -11,12 +11,13 @@ from classytags.helpers import InclusionTag
 from classytags.arguments import Argument, KeywordArgument
 
 from directupload.widgets import DirectUploadClearableFileInput
+from django.template import RequestContext
 
-@register.inclusion_tag('directupload/templatetags/head.html')
-def directupload_head():
-    return {
-        'media': DirectUploadClearableFileInput().media,
-    }
+@register.inclusion_tag('directupload/templatetags/head.html', takes_context=True)
+def directupload_head(context):
+    return RequestContext(context['request'],{
+        'media': DirectUploadClearableFileInput().media
+    })
 
 class RenderDirectUploadField(InclusionTag):
     name = 'render_upload_field'

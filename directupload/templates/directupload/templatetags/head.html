@@ -3,7 +3,11 @@
 var jQuery = django.jQuery; //uploadify will not work otherwise
 </script>
 {% endcomment %}
-{{media}}
+<script type="text/javascript" src="{{ STATIC_URL }}directupload/js/vendor/jquery.ui.widget.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}directupload/js/jquery.fileupload.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}directupload/js/jquery.iframe-transport.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}directupload/widget.js"></script>
+
 <script type="text/javascript">
 (function($) {
     $(document).ready(function() {
