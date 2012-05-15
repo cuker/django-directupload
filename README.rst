@@ -1,8 +1,12 @@
+.. image:: https://secure.travis-ci.orgi/cuker/django-directupload.png?branch=master
+   :target: http://travis-ci.org/cuker/django-directupload
+
 django-directupload is a Django application that offers direct uploading of files from your forms using Uploadify.
 
 Requirements
 ============
 
+* Python 2.6 or later
 * Django 1.3 or later
 * django-classy-tags
 
