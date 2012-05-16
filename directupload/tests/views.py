@@ -33,7 +33,6 @@ class UploadViewsTestCase(TestCase):
         request = self.request_factory.post('/', data)
         response = views.determine_name(request)
         json_data = self.assertDetermineNameResponse(response)
-        print json_data
     
     def test_determine_name_handles_date_paths(self):
         data = {'upload_to':'/images/%Y/%m/%d/',
