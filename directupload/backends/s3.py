@@ -19,6 +19,7 @@ BUCKET_URL          = getattr(settings, 'AWS_BUCKET_URL', ('https://' if SECURE_
 DEFAULT_ACL         = getattr(settings, 'AWS_DEFAULT_ACL', 'public-read')
 DEFAULT_KEY_PATTERN = getattr(settings, 'AWS_DEFAULT_KEY_PATTERN', '${targetname}')
 DEFAULT_FORM_TIME   = getattr(settings, 'AWS_DEFAULT_FORM_LIFETIME', 36000) # 10 HOURS
+BUCKET_PREFIX       = getattr(settings, 'AWS_MEDIA_STORAGE_BUCKET_PREFIX', getattr(settings, 'AWS_BUCKET_PREFIX', None))
 
 
 class S3Backend(BaseUploadBackend):
@@ -68,13 +69,17 @@ class S3Backend(BaseUploadBackend):
     def build_conditions(self):
         conditions = list()
         
+        path = self.options['folder']
+        if BUCKET_PREFIX:
+            path = os.path.join(BUCKET_PREFIX, path)
+        
         #make s3 happy with uploadify
         conditions.append(['starts-with', '$targetname', '']) #variable introduced by this package
-        conditions.append(['starts-with', '$targetpath', self.options['folder']])
+        conditions.append(['starts-with', '$targetpath', path])
         conditions.append({'success_action_status': '200'})
         
         #real conditions
-        conditions.append(['starts-with', '$key', self.options['folder']])
+        conditions.append(['starts-with', '$key', path])
         conditions.append({'bucket': self.post_data['bucket']})
         conditions.append({'acl': self.post_data['acl']})
         return conditions
