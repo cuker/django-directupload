@@ -20,6 +20,9 @@
                             {# begin custom uploadify snippet #}
                             {% if field.field|is_file_field:line.model_admin.model %}
                             {% render_upload_field field.field model=line.model_admin.model %}
+                            <script type="text/javascript">
+                                make_file_fields_dynamic($, '.directupload', "{% url directupload-options %}", "{% url directupload-determine-name %}");
+                            </script>
                             {% else %}
                             {{ field.field }}
                             {% endif %}
