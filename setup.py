@@ -9,14 +9,14 @@ version = '0.0.11'
 
 setup(name='django-directupload',
       version=version,
-      description='A Django application that offers direct uploading of files from your forms using Uploadify.',
+      description='A Django application that offers direct uploading of files from your forms using jQuery-file-upload.',
       author='Jason Kraus',
       author_email='jasonk@cukerinteractive.com',
       url='https://github.com/cuker/django-directupload',
       packages=find_packages(exclude=['test_environment', 'setuptests']),
       test_suite='setuptests.setuptest.SetupTestSuite',
       tests_require=(
-        'pep8',
+        'pep8==1.3.1',
         'coverage',
         'django',
       ),

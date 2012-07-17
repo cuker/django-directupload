@@ -1,7 +1,7 @@
 .. image:: https://secure.travis-ci.org/cuker/django-directupload.png?branch=master
    :target: http://travis-ci.org/cuker/django-directupload
 
-django-directupload is a Django application that offers direct uploading of files from your forms using Uploadify.
+django-directupload is a Django application that offers direct uploading of files from your forms using jQuery-file-upload.
 
 Requirements
 ============
@@ -19,6 +19,17 @@ Installation
 3) Add ``directupload`` to your INSTALLED_APPS
 4) Insert the following into the head of your admin/change_form.html template: {% load directupload_tags %}{% directupload_head %}
 5) Call directupload.admin.patch_admin to monkey patht the admin, this should be done before the admin.autodiscover is called
+
+
+Installing S3 Support
+=====================
+
+To enable directuploads to your S3 bucket, set up the following in your settings::
+
+    AWS_ACCESS_KEY_ID = 'accesskey'
+    AWS_SECRET_ACCESS_KEY = 'secretkey'
+    AWS_BUCKET_NAME = 'mybucket'
+    UPLOADIFY_BACKEND = 'directupload.backends.s3.S3UploadifyBackend'
 
 
 Features
